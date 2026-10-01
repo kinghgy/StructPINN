@@ -1,0 +1,32 @@
+name: Bug report / 错误报告
+description: Report a reproducible defect / 报告可复现错误
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Remove private paths and personal data before posting. / 发布前请删除私人路径和个人信息。"
+  - type: textarea
+    id: description
+    attributes:
+      label: Description / 问题描述
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction / 复现步骤
+      description: Include the command and a minimal YAML configuration.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境
+      description: OS, Python, PyTorch, device, dtype, and StructPINN commit.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs and evidence / 日志与证据

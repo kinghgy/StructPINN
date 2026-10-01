@@ -1,0 +1,52 @@
+problem:
+  type: beam
+  geometry:
+    length: 2.0
+  material:
+    profile:
+      type: linear
+      start: 0.08
+      end: 0.20
+  load:
+    distributed:
+      type: polynomial
+      coefficients: [-1.0, -0.5, 0.25]
+    point_loads: []
+  boundary:
+    left:
+      kind: fixed
+      displacement: 0.0
+      rotation: 0.0
+    right:
+      kind: free
+      moment: 0.0
+      shear: 0.0
+  boundary_enforcement: hard
+
+model:
+  architecture: split
+  hidden_layers: [64, 64, 64]
+  activation: tanh
+
+training:
+  dtype: float64
+  device: auto
+  adam_epochs: 5000
+  lbfgs_max_iter: 1000
+  collocation_points: 384
+  sampler: sobol
+  adaptive_sampling:
+    enabled: true
+    resample_every: 500
+    candidate_pool: 3072
+  adaptive_weighting:
+    enabled: true
+    update_every: 100
+
+validation:
+  enabled: true
+  beam_fem_elements: 500
+
+output:
+  directory: runs/beam_variable_stiffness
+  prediction_points: 501

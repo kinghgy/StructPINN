@@ -1,0 +1,42 @@
+problem:
+  type: beam
+  geometry: {length: 1.0}
+  material: {EI: 0.1}
+  load:
+    distributed: {type: uniform, value: -1.0}
+    point_loads: []
+  boundary:
+    left: {kind: fixed, displacement: 0.0, rotation: 0.0}
+    right: {kind: free, moment: 0.0, shear: 0.0}
+  boundary_enforcement: hard
+
+model:
+  architecture: shared
+  hidden_layers: [24, 24]
+  activation: tanh
+
+training:
+  dtype: float64
+  device: cpu
+  adam_epochs: 20
+  lbfgs_max_iter: 5
+  collocation_points: 32
+  log_every: 5
+  adaptive_sampling:
+    enabled: true
+    resample_every: 5
+    candidate_pool: 64
+    chunk_size: 32
+  adaptive_weighting:
+    enabled: true
+    update_every: 5
+    ema: 0.5
+  early_stopping: {enabled: false}
+
+validation:
+  enabled: true
+  beam_fem_elements: 50
+
+output:
+  directory: runs/quick_smoke_test
+  prediction_points: 51

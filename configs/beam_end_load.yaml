@@ -1,0 +1,44 @@
+problem:
+  type: beam
+  geometry: {length: 1.0}
+  material: {EI: 0.1}
+  load:
+    distributed: {type: uniform, value: 0.0}
+    point_loads: []
+  boundary:
+    left: {kind: fixed, displacement: 0.0, rotation: 0.0}
+    right: {kind: free, moment: 0.0, shear: -1.0}
+  boundary_enforcement: hard
+
+model:
+  architecture: shared
+  hidden_layers: [64, 64, 64]
+  activation: silu
+
+training:
+  seed: 42
+  dtype: float64
+  device: auto
+  adam_epochs: 4000
+  learning_rate: 0.001
+  lbfgs_max_iter: 800
+  collocation_points: 256
+  sampler: sobol
+  log_every: 100
+  adaptive_sampling:
+    enabled: true
+    resample_every: 500
+    candidate_pool: 2048
+  adaptive_weighting:
+    enabled: true
+    update_every: 100
+
+validation:
+  enabled: true
+  beam_fem_elements: 300
+
+output:
+  directory: runs/beam_end_load
+  prediction_points: 401
+  save_model: true
+  save_plots: true

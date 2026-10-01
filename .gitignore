@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and local settings
+.venv/
+.venv-*/
+venv/
+.env
+.env.*
+.idea/
+.pycharm-system/
+pycharm-structpinn.properties
+
+# Generated training artifacts and binary checkpoints
+runs/
+*.pt
+*.pth
+*.onnx
+
+# Private source documents
+*.pdf
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

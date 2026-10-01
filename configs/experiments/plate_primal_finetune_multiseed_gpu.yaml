@@ -1,0 +1,54 @@
+problem:
+  type: plate
+  geometry: {a: 1.0, b: 1.5}
+  material: {D: 0.1, nu: 0.3}
+  load: {type: uniform, value: -2.0}
+  boundary:
+    left: {kind: simply_supported}
+    right: {kind: simply_supported}
+    bottom: {kind: simply_supported}
+    top: {kind: simply_supported}
+  boundary_enforcement: hard
+  constitutive_enforcement: hard
+  boundary_compatibility: false
+  residual_scaling: isotropic
+  training_formulation: displacement
+
+model:
+  architecture: split
+  hidden_layers: [64, 64, 64]
+  activation: silu
+
+training:
+  seed: 11
+  dtype: float64
+  device: cuda
+  freeze_fields: [moment]
+  adam_epochs: 500
+  learning_rate: 0.0001
+  lbfgs_max_iter: 200
+  collocation_points: 512
+  boundary_points: 64
+  sampler: sobol
+  log_every: 50
+  adaptive_sampling:
+    enabled: true
+    resample_every: 250
+    candidate_pool: 2048
+    chunk_size: 256
+  adaptive_weighting:
+    enabled: true
+    update_every: 50
+    ema: 0.9
+  early_stopping: {enabled: false}
+
+validation:
+  enabled: true
+  plate_navier_terms: 61
+
+output:
+  directory: runs/plate_primal_finetune_multiseed_gpu/default
+  prediction_points: 101
+  plate_field_source: displacement
+  save_model: true
+  save_plots: true

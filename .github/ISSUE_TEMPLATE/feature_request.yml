@@ -1,0 +1,22 @@
+name: Feature request / 功能建议
+description: Propose a scoped improvement / 提出范围明确的改进
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / 要解决的问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change / 建议方案
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan / 验证方案
+      description: Explain the independent reference or acceptance criterion.

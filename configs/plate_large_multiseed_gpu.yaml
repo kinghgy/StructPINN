@@ -1,0 +1,50 @@
+problem:
+  type: plate
+  geometry: {a: 1.0, b: 1.5}
+  material: {D: 0.1, nu: 0.3}
+  load: {type: uniform, value: -2.0}
+  boundary:
+    left: {kind: simply_supported}
+    right: {kind: simply_supported}
+    bottom: {kind: simply_supported}
+    top: {kind: simply_supported}
+  boundary_enforcement: hard
+  constitutive_enforcement: hard
+
+model:
+  architecture: split
+  hidden_layers: [64, 64, 64]
+  activation: silu
+
+training:
+  seed: 11
+  dtype: float64
+  device: cuda
+  adam_epochs: 5000
+  learning_rate: 0.001
+  lbfgs_max_iter: 600
+  collocation_points: 1024
+  boundary_points: 96
+  sampler: sobol
+  log_every: 100
+  adaptive_sampling:
+    enabled: true
+    resample_every: 500
+    candidate_pool: 4096
+    chunk_size: 512
+  adaptive_weighting:
+    enabled: true
+    update_every: 200
+    ema: 0.9
+  early_stopping:
+    enabled: false
+
+validation:
+  enabled: true
+  plate_navier_terms: 61
+
+output:
+  directory: runs/plate_large_multiseed_gpu/default
+  prediction_points: 101
+  save_model: true
+  save_plots: true

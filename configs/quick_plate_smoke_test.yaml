@@ -1,0 +1,49 @@
+problem:
+  type: plate
+  geometry: {a: 1.0, b: 1.0}
+  material: {D: 0.1, nu: 0.3}
+  load: {type: uniform, value: -1.0}
+  boundary:
+    left: {kind: simply_supported}
+    right: {kind: simply_supported}
+    bottom: {kind: simply_supported}
+    top: {kind: simply_supported}
+  boundary_enforcement: hard
+  constitutive_enforcement: hard
+
+model:
+  architecture: shared
+  hidden_layers: [12, 12]
+  activation: tanh
+
+training:
+  seed: 42
+  dtype: float64
+  device: cpu
+  adam_epochs: 5
+  learning_rate: 0.001
+  lbfgs_max_iter: 2
+  collocation_points: 16
+  boundary_points: 6
+  sampler: sobol
+  log_every: 1
+  adaptive_sampling:
+    enabled: true
+    resample_every: 2
+    candidate_pool: 32
+    chunk_size: 16
+  adaptive_weighting:
+    enabled: true
+    update_every: 2
+    ema: 0.5
+  early_stopping: {enabled: false}
+
+validation:
+  enabled: true
+  plate_navier_terms: 11
+
+output:
+  directory: runs/quick_plate_smoke_test
+  prediction_points: 11
+  save_model: true
+  save_plots: true

@@ -1,0 +1,49 @@
+problem:
+  type: plate
+  geometry: {a: 1.0, b: 1.5}
+  material: {D: 0.1, nu: 0.3}
+  load: {type: uniform, value: -2.0}
+  boundary:
+    left: {kind: simply_supported}
+    right: {kind: simply_supported}
+    bottom: {kind: simply_supported}
+    top: {kind: simply_supported}
+  boundary_enforcement: hard
+  constitutive_enforcement: soft
+
+model:
+  architecture: split
+  hidden_layers: [48, 48, 48]
+  activation: silu
+
+training:
+  seed: 42
+  dtype: float64
+  device: cpu
+  adam_epochs: 3000
+  learning_rate: 0.001
+  lbfgs_max_iter: 300
+  collocation_points: 512
+  boundary_points: 64
+  sampler: sobol
+  log_every: 50
+  adaptive_sampling:
+    enabled: true
+    resample_every: 200
+    candidate_pool: 2048
+    chunk_size: 512
+  adaptive_weighting:
+    enabled: true
+    update_every: 100
+    ema: 0.9
+  early_stopping: {enabled: false}
+
+validation:
+  enabled: true
+  plate_navier_terms: 31
+
+output:
+  directory: runs/plate_debug
+  prediction_points: 61
+  save_model: true
+  save_plots: true
